@@ -12,10 +12,12 @@ namespace TestProject1
         [Fact]
         public void HomePageTest_ShouldRedirectTheHomePage()
         {
-            string html = File.ReadAllText("Templates/HomePaje.html").Replace("\n", "").Replace(" ", "");
-            var c = _httpClient.GetAsync("http://localhost:5000/").Result;
-            var v = c.Content.ReadAsStringAsync().Result.Replace("\n", "").Replace(" ", ""); 
-            Assert.Equal(html, v);
+            string arrange = File.ReadAllText("Templates/HomePaje.html").Replace("\n", "").Replace(" ", "");
+            var act = _httpClient.GetAsync("http://localhost:5000/").Result
+                .Content.ReadAsStringAsync().Result
+                .Replace("\n", "").Replace(" ", "");
+           
+            Assert.Equal(arrange, act);
         }
 
         [Theory]
@@ -24,17 +26,18 @@ namespace TestProject1
         [InlineData("111@111", "wer")]
         public void LoginPageTest_ShouldRedirectProfilePage(string email, string password)
         {
-            string html = File.ReadAllText("Templates/login.html").Replace("\n", "").Replace(" ", "");
-            var b = new MultipartContent();
+            string arrange = File.ReadAllText("Templates/login.html").Replace("\n", "").Replace(" ", "");
+            var content = new MultipartContent();
             Dictionary<string, string> data = new Dictionary<string, string>
             {
                 ["email"] = email,
                 ["password"] = password
             };
             HttpContent contentForm = new FormUrlEncodedContent(data);
-            var c = _httpClient.GetAsync("http://localhost:5000/login").Result;
-            var v = c.Content.ReadAsStringAsync().Result.Replace("\n", "").Replace(" ", "");
-            Assert.Equal(html, v);
+            var act = _httpClient.GetAsync("http://localhost:5000/login").Result
+                .Content.ReadAsStringAsync()
+                .Result.Replace("\n", "").Replace(" ", "");
+            Assert.Equal(arrange, act);
         }
         [Theory]
         [InlineData("Www@ee", "666", "ggg")]
@@ -44,8 +47,8 @@ namespace TestProject1
         [InlineData("WWww@ww", "", "123")]
         public void SignUpTest_ShouldRedirectLoginPage(string email, string name, string password)
         {
-            string html = File.ReadAllText("Templates/SingUp.html").Replace("\n", "").Replace(" ", "");
-            var b = new MultipartContent();
+            string arrange = File.ReadAllText("Templates/SingUp.html").Replace("\n", "").Replace(" ", "");
+            var content = new MultipartContent();
             Dictionary<string, string> data = new Dictionary<string, string>
             {
                 ["email"] = email,
@@ -53,23 +56,25 @@ namespace TestProject1
                 ["password"] = password
             };
             HttpContent contentForm = new FormUrlEncodedContent(data);
-            var bn = _httpClient.PostAsync("http://localhost:5000/signup", contentForm).Result;
-            var vc = bn.Content.ReadAsStringAsync().Result.Replace("\n", "").Replace(" ", "");
-            Assert.Equal(html, vc);
+            var act = _httpClient.PostAsync("http://localhost:5000/signup", contentForm).Result
+                .Content.ReadAsStringAsync()
+                .Result.Replace("\n", "").Replace(" ", "");
+            Assert.Equal(arrange, act);
         }
         [Fact]
         public void LogoutPageTest_ShouldRedirectHomePage()
         {
-            string html = File.ReadAllText("Templates/Logout.html").Replace("\n", "").Replace(" ", "");
-            var c = _httpClient.GetAsync("http://localhost:5000/logout").Result;
-            var v = c.Content.ReadAsStringAsync().Result.Replace("\n", "").Replace(" ", "");
-            Assert.Equal(html, v);
+            string arrange = File.ReadAllText("Templates/Logout.html").Replace("\n", "").Replace(" ", "");
+            var act = _httpClient.GetAsync("http://localhost:5000/logout").Result
+                .Content.ReadAsStringAsync()
+                .Result.Replace("\n", "").Replace(" ", ""); 
+            Assert.Equal(arrange, act);
         }
         [Fact]
         public void TestLoginWrongPassword_ShouldReturnExeption()
         {
-            string html = File.ReadAllText("Templates/WrogPassword.html").Replace("\n", "").Replace(" ", "");
-            var b = new MultipartContent();
+            string arrange = File.ReadAllText("Templates/WrogPassword.html").Replace("\n", "").Replace(" ", "");
+            var content = new MultipartContent();
             Dictionary<string, string> data = new Dictionary<string, string>
             {
                 ["email"] = "rrr@rrj",
@@ -77,25 +82,24 @@ namespace TestProject1
             };
             // создаем объект HttpContent
             HttpContent contentForm = new FormUrlEncodedContent(data);
-            var bn = _httpClient.PostAsync("http://localhost:5000/login", contentForm).Result;
-            var vc = bn.Content.ReadAsStringAsync().Result.Replace("\n", "").Replace(" ", "");
-            Assert.Equal(html, vc);
-
+            var act = _httpClient.PostAsync("http://localhost:5000/login", contentForm).Result.Content.ReadAsStringAsync().Result.Replace("\n", "").Replace(" ", "");
+            Assert.Equal(arrange, act);
         }
         [Fact]
         public void TestLoginWrongEmail_ShouldReturnExeption()
         {
-            string html = File.ReadAllText("Templates/WrongEmail.html").Replace("\n", "").Replace(" ", "");
-            var b = new MultipartContent();
+            string arrange = File.ReadAllText("Templates/WrongEmail.html").Replace("\n", "").Replace(" ", "");
+            var content = new MultipartContent();
             Dictionary<string, string> data = new Dictionary<string, string>
             {
                 ["email"] = "rrr@rrjr",
                 ["password"] = "kkk"
             };
             HttpContent contentForm = new FormUrlEncodedContent(data);
-            var bn = _httpClient.PostAsync("http://localhost:5000/login", contentForm).Result;
-            var vc = bn.Content.ReadAsStringAsync().Result.Replace("\n", "").Replace(" ", "");
-            Assert.Equal(html, vc);
+            var act = _httpClient.PostAsync("http://localhost:5000/login", contentForm).Result
+                .Content.ReadAsStringAsync()
+                .Result.Replace("\n", "").Replace(" ", "");
+            Assert.Equal(arrange, act);
 
         }
 
@@ -107,8 +111,8 @@ namespace TestProject1
         [InlineData("", "", "")]
         public void SignUpError_ShouldReturnExeption(string email, string name, string password)
         {
-            string html = File.ReadAllText("Templates/SignUpError.html").Replace("\n", "").Replace(" ", "");
-            var b = new MultipartContent();
+            string arrange = File.ReadAllText("Templates/SignUpError.html").Replace("\n", "").Replace(" ", "");
+            var content = new MultipartContent();
             Dictionary<string, string> data = new Dictionary<string, string>
             {
                 ["email"] = email,
@@ -117,17 +121,17 @@ namespace TestProject1
             };
             // создаем объект HttpContent
             HttpContent contentForm = new FormUrlEncodedContent(data);
-            var bn = _httpClient.PostAsync("http://localhost:5000/signup", contentForm).Result;
-            var vc = bn.Content.ReadAsStringAsync().Result.Replace("\n", "").Replace(" ", "");
-            Assert.Equal(html, vc);
+            var act = _httpClient.PostAsync("http://localhost:5000/signup", contentForm).Result
+                .Content.ReadAsStringAsync()
+                .Result.Replace("\n", "").Replace(" ", "");
+            Assert.Equal(arrange, act);
         }
         [Fact]
         public void ProfilePageTest_SouldReturnPageProfil()
         {
-            string html = File.ReadAllText("Templates/Profil.html").Replace("\n", "").Replace(" ", "");
-            var c = _httpClient.GetAsync("http://localhost:5000/profile").Result;
-            var v = c.Content.ReadAsStringAsync().Result.Replace("\n", "").Replace(" ", "");
-            Assert.Equal(html, v);
+            string arrange = File.ReadAllText("Templates/Profil.html").Replace("\n", "").Replace(" ", "");
+            var act = _httpClient.GetAsync("http://localhost:5000/profile").Result.Content.ReadAsStringAsync().Result.Replace("\n", "").Replace(" ", "");
+            Assert.Equal(arrange, act);
 
         }
     }
